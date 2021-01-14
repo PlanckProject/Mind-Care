@@ -14,5 +14,5 @@ She put forward this message to the audience:
 
 How can you contribute?
 - If you know anyone who provides mental health services, please ask them to fill this form or fill on their behalf: https://docs.google.com/forms/d/e/1FAIpQLSepDnZf5RHChv3kbEyq5cIYgzy06IDL1imzKedwj0coXHHBoA/viewform
-- If you want to contribute on improving the solution, for this repo, add feature, and raise a PR.
+- If you want to contribute on improving the solution, fork this repo, add feature, and raise a PR.
 - If you have ideas, shoot an email to [Trisanki](mailto:trisanki@gmail.com "Trisanki") or [Gaurav](mailto:hello@gauravsaini.dev "Gaurav")
