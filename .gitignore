@@ -93,3 +93,7 @@ sw.*
 # Added by cargo
 
 /target
+
+# Temp data dir
+temp/
+
