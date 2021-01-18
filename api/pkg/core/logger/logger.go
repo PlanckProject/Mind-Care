@@ -4,8 +4,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/PlankProject/Mental-Wellbeing-Resources/api/config"
-	"github.com/PlankProject/go-commons/logger"
+	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/config"
+	"github.com/PlanckProject/go-commons/logger"
 	"go.uber.org/fx"
 )
 

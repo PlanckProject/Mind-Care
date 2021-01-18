@@ -1,9 +1,9 @@
 package config
 
 import (
-	"github.com/PlankProject/go-commons/config"
-	"github.com/PlankProject/go-commons/db/mongo"
-	"github.com/PlankProject/go-commons/logger"
+	"github.com/PlanckProject/go-commons/config"
+	"github.com/PlanckProject/go-commons/db/mongo"
+	"github.com/PlanckProject/go-commons/logger"
 )
 
 type Configuration struct {

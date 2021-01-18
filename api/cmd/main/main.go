@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/PlankProject/Mental-Wellbeing-Resources/api/config"
-	"github.com/PlankProject/Mental-Wellbeing-Resources/api/pkg/core/logger"
-	"github.com/PlankProject/Mental-Wellbeing-Resources/api/pkg/server"
+	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/config"
+	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/core/logger"
+	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/server"
 	"go.uber.org/fx"
 )
 

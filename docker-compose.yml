@@ -6,6 +6,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"
+    depends_on:
+      - api
+      - frontend
   api:
     build:
       context: ./api

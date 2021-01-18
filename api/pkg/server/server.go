@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/PlankProject/Mental-Wellbeing-Resources/api/config"
-	"github.com/PlankProject/Mental-Wellbeing-Resources/api/pkg/io/http"
+	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/config"
+	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/io/http"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/fx"
 )

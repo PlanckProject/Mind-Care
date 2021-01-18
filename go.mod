@@ -1,9 +1,9 @@
-module github.com/PlankProject/Mental-Wellbeing-Resources
+module github.com/PlanckProject/Mental-Wellbeing-Resources
 
 go 1.15
 
 require (
-	github.com/PlankProject/go-commons v0.0.0-20210114105850-43305c2eb1bc
+	github.com/PlanckProject/go-commons v0.0.0-20210118033904-124250da3179
 	github.com/gin-gonic/gin v1.6.3
 	github.com/sirupsen/logrus v1.7.0
 	go.mongodb.org/mongo-driver v1.4.4
