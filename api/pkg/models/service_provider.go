@@ -12,4 +12,5 @@ type ServiceProvider struct {
 	Timings       string             `bson:"timings"        json:"timings"`
 	Declaration   bool               `bson:"declaration"    json:"declaration"`
 	Approved      bool               `bson:"approved"       json:"approved"`
+	Location      Location           `bson:"location" json:"location"`
 }
