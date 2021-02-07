@@ -1,6 +1,6 @@
 # Mental-Wellbeing-Resources
 
-This idea of a cumulating mental wellbeing resources has been put forward by Trisanki Saikia. Ms. Saikia is a Research Assistant at Solidaridad Network and is working in Global Climate and Landscape Innovation Taskforce in the German office of the network.
+This idea of cumulating mental wellbeing resources has been put forward by Trisanki Saikia. Ms. Saikia is a Research Assistant at Solidaridad Network and is working in Global Climate and Landscape Innovation Taskforce in the German office of the network.
 
 She put forward this message to the audience:
 
