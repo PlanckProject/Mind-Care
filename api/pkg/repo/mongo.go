@@ -119,6 +119,13 @@ func (m *mongoProvider) Get(ctx context.Context, skip int64, limit int64) ([]mod
 	return serviceProviders, err
 }
 
+func (m *mongoProvider) GetByID(ctx context.Context, id primitive.ObjectID) (models.ServiceProvider, error) {
+	serviceProvider := models.ServiceProvider{}
+	result := m.collection.FindOne(ctx, bson.M{"approved": true, "_id": id})
+	err := result.Decode(&serviceProvider)
+	return serviceProvider, err
+}
+
 func (m *mongoProvider) Add(ctx context.Context, serviceProvider models.ServiceProvider) (string, error) {
 	serviceProvider.ID = primitive.NewObjectID()
 	serviceProvider.CreatedAt = time.Now()

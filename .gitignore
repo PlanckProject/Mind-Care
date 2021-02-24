@@ -94,4 +94,5 @@ vendor/
 # Temp data dir
 temp/
 
-
+# Build binary
+main

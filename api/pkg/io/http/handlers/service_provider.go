@@ -7,17 +7,20 @@ import (
 
 	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/config"
 	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/core/utils"
+	errorKeys "github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/errors"
 	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/models"
 	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/service"
 	"github.com/PlanckProject/go-commons/errors"
 	"github.com/PlanckProject/go-commons/logger"
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 func registerServiceProviderHandler(g *gin.Engine, cfg *config.Configuration, svc service.IServiceProvidersService) {
 	{
 		g.POST("/service_provider", addServiceProvider(svc))
 		g.GET("/service_providers", getServiceProvidersByLocation(svc, cfg))
+		g.GET("/service_provider/:id", getServiceProviderByID(svc))
 	}
 }
 
@@ -38,9 +41,33 @@ func addServiceProvider(svc service.IServiceProvidersService) func(*gin.Context)
 
 		merr := err.(errors.ErrorWithMetadata)
 		switch merr.ErrorValue() {
+		case errorKeys.LOCATION_DATA_NOT_FOUND.Error():
+			utils.Respond(c, http.StatusUnprocessableEntity, nil, err)
 		default:
 			logger.WithField("error", err).Error("Error while adding data")
-			utils.Respond(c, http.StatusInternalServerError, nil, fmt.Errorf("Internal server error"))
+			utils.Respond(c, http.StatusInternalServerError, nil, errorKeys.INTERNAL_SERVER_ERROR)
+		}
+	}
+}
+
+func getServiceProviderByID(svc service.IServiceProvidersService) func(*gin.Context) {
+	return func(c *gin.Context) {
+		serviceProvider, err := svc.GetByID(c.Request.Context(), c.Param("id"))
+
+		if err == nil {
+			utils.Respond(c, http.StatusOK, serviceProvider, err)
+			return
+		}
+
+		merr := err.(errors.ErrorWithMetadata)
+		switch merr.ErrorValue() {
+		case mongo.ErrNoDocuments.Error():
+			utils.Respond(c, http.StatusNotFound, nil, errorKeys.NO_DATA)
+		case errorKeys.INVALID_ID.Error():
+			utils.Respond(c, http.StatusBadRequest, nil, merr)
+		default:
+			logger.WithField("error", err).Error("Error while retrieving data")
+			utils.Respond(c, http.StatusInternalServerError, nil, errorKeys.INTERNAL_SERVER_ERROR)
 		}
 	}
 }
@@ -49,7 +76,7 @@ func getServiceProvidersByLocation(svc service.IServiceProvidersService, cfg *co
 	return func(c *gin.Context) {
 		st, li := parseStartAndLimitQueries(c.Query("st"), c.Query("li"), cfg.App.MaxQueryLimit)
 		if li == 0 {
-			utils.Respond(c, http.StatusBadRequest, nil, fmt.Errorf("Invalid limit query"))
+			utils.Respond(c, http.StatusBadRequest, nil, errors.NewErrorWithMetadata().SetError(errorKeys.INVALID_QUERY_LIMIT.Error()))
 			return
 		}
 
@@ -60,7 +87,8 @@ func getServiceProvidersByLocation(svc service.IServiceProvidersService, cfg *co
 		if c.Query("loc") == "true" {
 			lat, lon, maxDistance, parseErr := parseLatAndLon(c.Query("lat"), c.Query("lon"), c.Query("dist"), cfg.App.MaxDistanceDefault)
 			if parseErr != nil {
-				utils.Respond(c, http.StatusBadRequest, nil, err)
+				logger.WithField("error", parseErr).Error("Error parsing location coordinates")
+				utils.Respond(c, http.StatusBadRequest, nil, errorKeys.INVALID_QUERY_PARAMS)
 				return
 			}
 			serviceProviderRequestParams.Location = true
@@ -72,7 +100,7 @@ func getServiceProvidersByLocation(svc service.IServiceProvidersService, cfg *co
 		serviceProviders, err = svc.Get(c.Request.Context(), serviceProviderRequestParams)
 
 		if err == nil {
-			utils.Respond(c, http.StatusOK, serviceProviders, err)
+			utils.Respond(c, http.StatusOK, serviceProviders, nil)
 			return
 		}
 
@@ -80,7 +108,7 @@ func getServiceProvidersByLocation(svc service.IServiceProvidersService, cfg *co
 		switch merr.ErrorValue() {
 		default:
 			logger.WithField("error", err).Error("Error while retrieving data")
-			utils.Respond(c, http.StatusInternalServerError, nil, fmt.Errorf("Internal server error"))
+			utils.Respond(c, http.StatusInternalServerError, nil, errorKeys.INTERNAL_SERVER_ERROR)
 		}
 	}
 }

@@ -139,12 +139,12 @@ export default {
     };
   },
   beforeMount() {
-    if (!this.$store.getters.customThemeSet) this.$store.dispatch("initTheme");
+    if (!this.$store.getters.customThemeSet) this.$store.dispatch("theme/initTheme");
   },
   head() {
     return {
       bodyAttrs: {
-        class: this.$store.getters.theme,
+        class: this.$store.getters["theme/theme"],
       },
     };
   },

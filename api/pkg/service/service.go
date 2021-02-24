@@ -2,11 +2,14 @@ package service
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/config"
+	errorKeys "github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/errors"
 	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/models"
 	repository "github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/repo"
+	"github.com/PlanckProject/go-commons/errors"
+	"github.com/PlanckProject/go-commons/logger"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func New(repo repository.IServiceProvidersRepo, cfg *config.Configuration) IServiceProvidersService {
@@ -14,6 +17,7 @@ func New(repo repository.IServiceProvidersRepo, cfg *config.Configuration) IServ
 }
 
 type IServiceProvidersService interface {
+	GetByID(ctx context.Context, id string) (*models.ServiceProvider, error)
 	Get(ctx context.Context, serviceProviderRequestParams *models.ServiceProviderRequestParams) ([]models.ServiceProvider, error)
 	Add(ctx context.Context, serviceProvider models.ServiceProvider) (string, error)
 }
@@ -23,25 +27,47 @@ type serviceProvidersServiceImpl struct {
 	cfg  *config.Configuration
 }
 
+func (s *serviceProvidersServiceImpl) GetByID(ctx context.Context, id string) (*models.ServiceProvider, error) {
+	mongoObjectId, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		logger.
+			WithFields(logger.Fields{"error": err, "id": id}).
+			Error("Error parsing ID")
+		return nil, errors.NewErrorWithMetadata().SetError(errorKeys.INVALID_ID.Error())
+	}
+
+	serviceProvider, err := s.repo.GetByID(ctx, mongoObjectId)
+	return &serviceProvider, errors.NewErrorWithMetadata().SetError(err.Error())
+}
+
 func (s *serviceProvidersServiceImpl) Get(ctx context.Context, serviceProviderRequestParams *models.ServiceProviderRequestParams) ([]models.ServiceProvider, error) {
+	var response []models.ServiceProvider
+	var err error
+
 	if serviceProviderRequestParams.Location {
-		return s.repo.GetNearCoordinates(ctx, &repository.LocationQueryParams{
+		response, err = s.repo.GetNearCoordinates(ctx, &repository.LocationQueryParams{
 			Lat:         serviceProviderRequestParams.LocationQuery.Geometery.Lat,
 			Lon:         serviceProviderRequestParams.LocationQuery.Geometery.Lon,
 			MaxDistance: serviceProviderRequestParams.LocationQuery.MaxDistance,
 		},
 			serviceProviderRequestParams.Start, serviceProviderRequestParams.Limit)
 	} else {
-		return s.repo.Get(ctx, serviceProviderRequestParams.Start, serviceProviderRequestParams.Limit)
+		response, err = s.repo.Get(ctx, serviceProviderRequestParams.Start, serviceProviderRequestParams.Limit)
 	}
+	if err == nil {
+		return response, err
+	}
+
+	return response, errors.NewErrorWithMetadata().SetError((err.Error()))
 }
 
 func (s *serviceProvidersServiceImpl) Add(ctx context.Context, serviceProvider models.ServiceProvider) (string, error) {
 	lat, lon, err := getCoordinates(ctx, &serviceProvider.Contact.Address, &s.cfg.Maps)
 	if err != nil {
-
-		// TODO: Convert this into error with metadata
-		return "", fmt.Errorf("Unable to fetch coordinates. Please supply the coordinates to proceed")
+		return "", errors.
+			NewErrorWithMetadata().
+			SetError(errorKeys.LOCATION_DATA_NOT_FOUND.Error()).
+			SetMetadata("Unable to fetch coordinates. Please supply the coordinates to proceed")
 	}
 
 	serviceProvider.Location.Type = "Point"
@@ -50,6 +76,9 @@ func (s *serviceProvidersServiceImpl) Add(ctx context.Context, serviceProvider m
 
 	id, err := s.repo.Add(ctx, serviceProvider)
 
-	// TODO: Convert this into error with metadata
-	return id, err
+	if err != nil {
+		return id, nil
+	}
+
+	return id, errors.NewErrorWithMetadata().SetError(err.Error())
 }

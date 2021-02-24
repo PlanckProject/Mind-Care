@@ -67,5 +67,9 @@ export default {
     icons: {
       solid: ['faSignInAlt', 'faSun', 'faMoon', 'faCircle']
     }
+  },
+
+  privateRuntimeConfig: {
+    apiUri: process.env.API_SERVER_URI || 'http://localhost:8082'
   }
 }
