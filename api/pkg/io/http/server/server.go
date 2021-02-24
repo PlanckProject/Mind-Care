@@ -1,18 +1,21 @@
 package server
 
 import (
+	"context"
 	"fmt"
 	"io"
+	"os"
 	"strings"
 	"time"
 
 	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/config"
-	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/io/http"
+	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/io/http/handlers"
+	"github.com/PlanckProject/go-commons/logger"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/fx"
 )
 
-var Module = fx.Options(fx.Provide(New), http.Module)
+var Module = fx.Options(fx.Provide(New), handlers.Module, fx.Invoke(start))
 
 func New(cfg *config.Configuration, logWriter io.Writer) *gin.Engine {
 	g := gin.New()
@@ -35,6 +38,26 @@ func getGinLoggerConfig(cfg *config.Configuration, writer io.Writer) gin.LoggerC
 	loggerConfig.Output = writer
 
 	return loggerConfig
+}
+
+func start(g *gin.Engine, cfg *config.Configuration, lc fx.Lifecycle) {
+	lc.Append(fx.Hook{
+		OnStart: func(c context.Context) error {
+			if cfg.Server.Port == "" {
+				cfg.Server.Port = "8080"
+			}
+			port := fmt.Sprintf(":%s", cfg.Server.Port)
+			logger.Info("Server running on ", port)
+			go func() {
+				err := g.Run(port)
+				if err != nil {
+					logger.WithField("error", err).Error("Failed to start server")
+					os.Exit(1)
+				}
+			}()
+			return nil
+		},
+	})
 }
 
 func formatter(param gin.LogFormatterParams) string {

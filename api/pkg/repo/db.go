@@ -9,6 +9,9 @@ import (
 
 var Module = fx.Options(fx.Provide(NewMongoDBDataProvider))
 
-type IDataProvider interface {
-	GetNearCoordinates(ctx context.Context, lat float64, lng float64) ([]models.ServiceProvider, error)
+type IServiceProvidersRepo interface {
+	Ping(ctx context.Context) error
+	GetNearCoordinates(ctx context.Context, locationQueryParams *LocationQueryParams, skip int64, limit int64) ([]models.ServiceProvider, error)
+	Get(ctx context.Context, skip int64, limit int64) ([]models.ServiceProvider, error)
+	Add(ctx context.Context, serviceProvider models.ServiceProvider) (string, error)
 }

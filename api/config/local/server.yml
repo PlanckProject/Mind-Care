@@ -1,0 +1,19 @@
+server:
+  port: 8082
+mongo:
+  connection_string: 'mongodb://localhost:27017/mental_wellbeing_resources'
+  database: mental_wellbeing_resources
+  collection: service_providers
+app:
+  max_query_limit: 20
+  max_distance_default: 25000
+maps:
+  location_query_placeholder: '${query}'
+  provider_api_key_placeholder: '${api_key}'
+  osm:
+    url: 'https://nominatim.openstreetmap.org/search?q=${query}&format=json&polygon=1&addressdetails=1'
+    enabled: true
+  bing_maps:
+    url: 'http://dev.virtualearth.net/REST/v1/Locations?query=${query}&key=${api_key}'
+    key: ''
+    enabled: false
