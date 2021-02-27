@@ -75,7 +75,7 @@ func (m *mongoProvider) GetNearCoordinates(ctx context.Context, locationQueryPar
 			"$near": bson.M{
 				"$geometry": bson.M{
 					"type":        "Point",
-					"coordinates": []float64{locationQueryParams.Lon, locationQueryParams.Lat},
+					"coordinates": []float64{locationQueryParams.Lat, locationQueryParams.Lon},
 				},
 				"$maxDistance": locationQueryParams.MaxDistance,
 			},
