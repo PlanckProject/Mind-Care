@@ -11,9 +11,10 @@
     "docker": "docker build -t and ."
   },
   "dependencies": {
+    "@fortawesome/free-regular-svg-icons": "^5.15.2",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@nuxtjs/fontawesome": "^1.1.2",
-    "axios": "^0.21.0",
+    "axios": "^0.21.1",
     "js-cookie": "^2.2.1",
     "moment": "^2.29.1",
     "nuxt": "^2.13.0",

@@ -65,7 +65,7 @@ export default {
   // Custom modules
   fontawesome: {
     icons: {
-      solid: ['faSignInAlt', 'faSun', 'faMoon', 'faCircle']
+      solid: ['faSignInAlt', 'faSun', 'faMoon', 'faCircle', 'faMapPin', 'faGlobe', 'faPhone', 'faEnvelope', 'faClock', 'faMoneyBill', 'faDiagnoses', 'faLaptopMedical'],
     }
   },
 

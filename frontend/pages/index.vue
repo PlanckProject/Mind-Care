@@ -2,19 +2,42 @@
   <main>
     <site-header />
     <theme-switcher />
-    <provider-carousel />
+    <online-offline-toggle />
+    <provider-carousel :carouselData="providers" />
   </main>
 </template>
 <script>
+import axios from "axios";
+
 export default {
   transition: "fade",
-  data() {
-    return {
-      currentHour: new Date().getHours(),
-    };
+  name: "index",
+  async asyncData(context) {
+    let requestUrl = context.$config.apiUri + "/service_providers";
+    if (Object.entries(context.route.query).length != 0) {
+      let { lat, lon, online } = context.route.query;
+      if (online) requestUrl += "?online=true";
+      else if (lat && lon) requestUrl += `?loc=true&lat=${lat}&lon=${lon}`;
+    }
+
+    let providers = await axios
+      .get(requestUrl)
+      .then((res) => res.data.data)
+      .catch(() => context.redirect("/error"));
+    return { providers };
+  },
+  mounted() {
+    if (Object.entries(this.$route.query).length == 0) {
+      navigator.geolocation.getCurrentPosition(
+        ({ coords }) => {
+          window.location =
+            window.location + `?lat=${coords.latitude}&lon=${coords.longitude}`;
+        },
+        () => {}
+      );
+    }
   },
   beforeMount() {
-    console.log(this.$store.getters["config/apiServerUri"]);
     if (!this.$store.getters["theme/customThemeSet"])
       this.$store.dispatch("theme/initTheme");
   },
@@ -27,13 +50,3 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-body {
-  margin: 0.5rem 0;
-}
-main {
-  margin: auto;
-  background: red;
-  width: 95vw;
-}
-</style>

@@ -1,24 +1,22 @@
 <template>
-  <div class="light-switcher" @click="changeTheme">
-    <span><font-awesome-icon :icon="iconToLoad" /></span>
+  <div @click="toggleOnlineQuery()">
+    <span><font-awesome-icon :style="{'color': isOnline}" icon="laptop-medical" /></span>
   </div>
 </template>
 <script>
 export default {
-  data() {
-    return {
-      iconToLoad: "circle"
+  computed: {
+    isOnline() {
+      return (this.$route.query.online == 'true')? 'red': 'var(--text-color)';
     }
   },
-  beforeMount() {
-    document.body.className = this.$store.getters["theme/theme"];
-    this.iconToLoad = this.$store.getters["theme/theme"] == "light" ? "moon" : "sun"
-  },
   methods: {
-    changeTheme() {
-      this.$store.dispatch("theme/toggleTheme");
-      document.body.className = this.$store.getters["theme/theme"];
-      this.iconToLoad = this.$store.getters["theme/theme"] == "light" ? "moon" : "sun";  
+    toggleOnlineQuery() {
+      if(this.$route.query.online == 'true') {
+        window.location = this.$route.path
+      } else {
+        window.location = this.$route.path + "?online=true"
+      }
     }
   }
 };
@@ -34,7 +32,7 @@ div {
   height: 1.5rem;
   position: absolute;
   background: var(--accent-color);
-  top: 0.5rem;
+  top: 2.5rem;
   right: 0.5rem;
   padding: 0rem 0.5rem;
   border-radius: 50%;
@@ -62,9 +60,9 @@ div {
   height: 3rem;
   position: absolute;
   background: var(--accent-color);
-  top: 1rem;
+  top: 5rem;
   right: 1rem;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 0.875rem;
   border-radius: 50%;
   box-shadow: 0 0 0.3rem 0;
   text-decoration: none;
