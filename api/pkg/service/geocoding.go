@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 	"strconv"
 	"strings"
 
@@ -30,6 +31,17 @@ type bingMapsResponse struct {
 	} `json:"resourceSets"`
 }
 
+type googleMapsResponse struct {
+	Results []struct {
+		Geometry struct {
+			Location struct {
+				Lat float64 `json:"lat"`
+				Lon float64 `json:"lng"`
+			} `json:"location"`
+		} `json:"geometry"`
+	} `json:"results"`
+}
+
 // Since this in an internal module, this is not exported.
 func getCoordinates(ctx context.Context, address *models.Address, mapsConfig *config.MapsConfig) (lat float64, lon float64, err error) {
 	if len(address.Coordinates) == 2 {
@@ -45,12 +57,12 @@ func getCoordinates(ctx context.Context, address *models.Address, mapsConfig *co
 	addressString := getAddressAsString(address)
 	logEntry := logger.WithField("address_string", addressString)
 
-	// Check OSM
-	if mapsConfig.OSM.Enabled {
-		logEntry.Info("Using OSM to fetch coordinates")
-		lat, lon, err = getCoordinatesFromOSM(ctx, addressString, mapsConfig)
+	// Check Google Maps
+	if mapsConfig.GoogleMaps.Enabled {
+		logEntry.Info("Using Google maps to fetch coordinates")
+		lat, lon, err = getCoordinatesFromGoogleMaps(ctx, addressString, mapsConfig)
 		if err != nil {
-			logEntry.Warn("Could not fetch coordinates from OSM")
+			logEntry.Warn("Could not fetch coordinates from Google Maps")
 		} else {
 			return
 		}
@@ -62,6 +74,17 @@ func getCoordinates(ctx context.Context, address *models.Address, mapsConfig *co
 		lat, lon, err = getCoordinatesFromBingMaps(ctx, addressString, mapsConfig)
 		if err != nil {
 			logEntry.Warn("Could not fetch coordinates from Bing Maps")
+		} else {
+			return
+		}
+	}
+
+	// Check OSM
+	if mapsConfig.OSM.Enabled {
+		logEntry.Info("Using OSM to fetch coordinates")
+		lat, lon, err = getCoordinatesFromOSM(ctx, addressString, mapsConfig)
+		if err != nil {
+			logEntry.Warn("Could not fetch coordinates from OSM")
 		} else {
 			return
 		}
@@ -94,7 +117,10 @@ func getCoordinatesFromBingMaps(ctx context.Context, addressStr string, mapsConf
 	queryUrl := strings.Replace(mapsConfig.BingMaps.URL, mapsConfig.LocationQueryPlaceholder, addressStr, 1)
 	queryUrl = strings.Replace(queryUrl, mapsConfig.ProviderAPIKeyPlaceholder, mapsConfig.BingMaps.Key, 1)
 
-	responseBody, err := makeHTTPRequest(ctx, queryUrl)
+	parsedURL, _ := url.Parse(queryUrl)
+
+	requestURL := fmt.Sprintf("%s://%s%s?%s", parsedURL.Scheme, parsedURL.Host, parsedURL.Path, parsedURL.Query().Encode())
+	responseBody, err := makeHTTPRequest(ctx, requestURL)
 	if err != nil {
 		return 0, 0, err
 	}
@@ -110,17 +136,32 @@ func getCoordinatesFromBingMaps(ctx context.Context, addressStr string, mapsConf
 	return bingMapsResp.ResourcesSet[0].Resources[0].Point.Coordinates[0], bingMapsResp.ResourcesSet[0].Resources[0].Point.Coordinates[1], nil
 }
 
+func getCoordinatesFromGoogleMaps(ctx context.Context, addressStr string, mapsConfig *config.MapsConfig) (float64, float64, error) {
+	queryUrl := strings.Replace(mapsConfig.GoogleMaps.URL, mapsConfig.LocationQueryPlaceholder, addressStr, 1)
+	queryUrl = strings.Replace(queryUrl, mapsConfig.ProviderAPIKeyPlaceholder, mapsConfig.GoogleMaps.Key, 1)
+
+	parsedURL, _ := url.Parse(queryUrl)
+
+	requestURL := fmt.Sprintf("%s://%s%s?%s", parsedURL.Scheme, parsedURL.Host, parsedURL.Path, parsedURL.Query().Encode())
+	responseBody, err := makeHTTPRequest(ctx, requestURL)
+	if err != nil {
+		return 0, 0, err
+	}
+
+	googleMapsResp := googleMapsResponse{}
+	_ = json.Unmarshal(responseBody, &googleMapsResp)
+	if len(googleMapsResp.Results) == 0 {
+		return 0, 0, fmt.Errorf("No responses found from Google Maps")
+	}
+	return googleMapsResp.Results[0].Geometry.Location.Lat, googleMapsResp.Results[0].Geometry.Location.Lon, nil
+}
+
 func getAddressAsString(address *models.Address) string {
 	result := ""
 
-	/*
-		// Not including street address 1 currently for coordinates resolution
-		// Because sometimes too much info is outright bad! c:
-		// Will think of a solution later
-
-		if len(address.StreetAddress1) != 0 {
-		}
-	*/
+	if len(address.StreetAddress1) != 0 {
+		result += address.StreetAddress1
+	}
 
 	if len(address.StreetAddress2) != 0 {
 		result += address.StreetAddress2

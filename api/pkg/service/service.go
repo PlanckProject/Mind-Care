@@ -76,7 +76,7 @@ func (s *serviceProvidersServiceImpl) Add(ctx context.Context, serviceProvider m
 
 	id, err := s.repo.Add(ctx, serviceProvider)
 
-	if err != nil {
+	if err == nil {
 		return id, nil
 	}
 

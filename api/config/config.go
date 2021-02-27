@@ -41,6 +41,7 @@ type MapsConfig struct {
 	ProviderAPIKeyPlaceholder string       `mapstructure:"provider_api_key_placeholder"`
 	OSM                       MapsProvider `mapstructure:"osm"`
 	BingMaps                  MapsProvider `mapstructure:"bing_maps"`
+	GoogleMaps                MapsProvider `mapstructure:"google_maps"`
 }
 
 type MapsProvider struct {

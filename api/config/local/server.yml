@@ -12,8 +12,12 @@ maps:
   provider_api_key_placeholder: '${api_key}'
   osm:
     url: 'https://nominatim.openstreetmap.org/search?q=${query}&format=json&polygon=1&addressdetails=1'
-    enabled: true
+    enabled: false
   bing_maps:
     url: 'http://dev.virtualearth.net/REST/v1/Locations?query=${query}&key=${api_key}'
-    key: ''
+    key: 'An99TEcPBb6Qofv6yWGC6IGWmoUJNgAadAbTIs1EOPfbcBN2h5IgsUvQErcciUJA'
+    enabled: true
+  google_maps:
+    url: 'https://maps.googleapis.com/maps/api/geocode/json?address=${query}&key=${api_key}'
+    key: 'AIzaSyAF9YKQsGZ2jpYp_NDxzT-Gq1hs7WZPyUA'
     enabled: false
