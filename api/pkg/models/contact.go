@@ -1,13 +1,12 @@
 package models
 
 type Contact struct {
-	ContactPerson  string        `bson:"contact_person" json:"contact_person"`
-	Email          string        `bson:"email" json:"email"`
-	ContactNumbers []string      `bson:"contact_numbers" json:"contact_numbers"`
-	ContactEmails  []string      `bson:"contact_emails" json:"contact_emails"`
-	Address        Address       `bson:"address" json:"address"`
-	Other          []interface{} `bson:"other" json:"other"`
-	Websites       []string      `bson:"websites" json:"websites"`
+	ContactPerson string        `bson:"contact_person" json:"contact_person"`
+	Email         string        `bson:"email" json:"email"`
+	Number        string        `bson:"number" json:"number"`
+	Address       Address       `bson:"address" json:"address"`
+	Other         []interface{} `bson:"other" json:"other"`
+	Website       string        `bson:"website" json:"website"`
 }
 
 type Address struct {
@@ -18,5 +17,5 @@ type Address struct {
 	Country        string    `bson:"country" json:"country"`
 	Landmark       string    `bson:"landmark" json:"landmark"`
 	ZipCode        string    `bson:"zip_code" json:"zip_code"`
-	Coordinates    []float64 `bson:"-" json:"coordinates,omitempty"`
+	Coordinates    []float64 `bson:"coordinates,omitempty" json:"coordinates,omitempty"`
 }

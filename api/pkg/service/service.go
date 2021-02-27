@@ -73,6 +73,7 @@ func (s *serviceProvidersServiceImpl) Add(ctx context.Context, serviceProvider m
 	if serviceProvider.Online {
 		lat = 0
 		lon = 0
+		serviceProvider.Contact.Address.Coordinates = nil
 	} else {
 		lat, lon, err = getCoordinates(ctx, &serviceProvider.Contact.Address, &s.cfg.Maps)
 		if err != nil {
@@ -81,10 +82,11 @@ func (s *serviceProvidersServiceImpl) Add(ctx context.Context, serviceProvider m
 				SetError(errorKeys.LOCATION_DATA_NOT_FOUND.Error()).
 				SetMetadata("Unable to fetch coordinates. Please supply the coordinates to proceed")
 		}
+		serviceProvider.Contact.Address.Coordinates = []float64{lat, lon}
 	}
 
 	serviceProvider.Location.Type = "Point"
-	serviceProvider.Location.Coordinates = []interface{}{lon, lat}
+	serviceProvider.Location.Coordinates = []interface{}{lat, lon}
 	serviceProvider.Location.Properties = make(map[string]interface{})
 
 	id, err := s.repo.Add(ctx, serviceProvider)
