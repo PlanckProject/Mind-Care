@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
 	"strconv"
 	"strings"
 
@@ -15,6 +16,27 @@ import (
 	"github.com/PlanckProject/go-commons/http/request"
 	"github.com/PlanckProject/go-commons/logger"
 )
+
+func InitMapProviderAPIKeys(c *config.Configuration) error {
+	// Google maps
+	if c.Maps.GoogleMaps.Enabled && len(c.Maps.GoogleMaps.Key) == 0 {
+		c.Maps.GoogleMaps.Key = os.Getenv("GOOGLE_MAPS_API_KEY")
+		if len(c.Maps.GoogleMaps.Key) == 0 {
+			return fmt.Errorf("Google maps has been enabled but no key provided. Please provide an API Key in config or set GOOGLE_MAPS_API_KEY env variable")
+		}
+	}
+
+	// Bing maps
+	if c.Maps.BingMaps.Enabled && len(c.Maps.BingMaps.Key) == 0 {
+		c.Maps.BingMaps.Key = os.Getenv("BING_MAPS_API_KEY")
+		fmt.Println(c.Maps.BingMaps.Key, "\n\n\n\n\t", os.Environ())
+		if len(c.Maps.BingMaps.Key) == 0 {
+			return fmt.Errorf("Bing maps has been enabled but no key provided. Please provide an API Key in config or set BING_MAPS_API_KEY env variable")
+		}
+	}
+
+	return nil
+}
 
 type osmResponseItem struct {
 	Latitude  string `json:"lat"`
