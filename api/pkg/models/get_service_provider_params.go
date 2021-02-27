@@ -1,6 +1,7 @@
 package models
 
 type ServiceProviderRequestParams struct {
+	Online        bool
 	Start         int64
 	Limit         int64
 	Location      bool

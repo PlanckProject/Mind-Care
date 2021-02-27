@@ -14,6 +14,7 @@ type ServiceProvider struct {
 	FeeRange      string             `bson:"fee_range"      json:"fee_range"`
 	FeeNegotiable string             `bson:"fee_negotiable" json:"fee_negotiable"`
 	Timings       string             `bson:"timings" json:"timings"`
+	Online        bool               `bson:"online" json:"online"`
 	Declaration   bool               `bson:"declaration" json:"-"`
 	Approved      bool               `bson:"approved" json:"-"`
 	Location      Location           `bson:"location" json:"-"`

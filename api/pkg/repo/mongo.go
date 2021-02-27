@@ -70,6 +70,7 @@ func (m *mongoProvider) GetNearCoordinates(ctx context.Context, locationQueryPar
 	serviceProviders := make([]models.ServiceProvider, 0)
 	cursor, err := m.collection.Find(ctx, bson.M{
 		"approved": true,
+		"online":   false,
 		"location": bson.M{
 			"$near": bson.M{
 				"$geometry": bson.M{
@@ -93,6 +94,7 @@ func (m *mongoProvider) GetNearCoordinates(ctx context.Context, locationQueryPar
 		}
 		serviceProviders = append(serviceProviders, serviceProvider)
 	}
+	_ = cursor.Close(ctx)
 	return serviceProviders, err
 }
 
@@ -102,7 +104,7 @@ func (m *mongoProvider) Get(ctx context.Context, skip int64, limit int64) ([]mod
 	opts := mongoOptions(skip, limit)
 
 	serviceProviders := make([]models.ServiceProvider, 0)
-	cursor, err := m.collection.Find(ctx, bson.M{"approved": true}, opts)
+	cursor, err := m.collection.Find(ctx, bson.M{"approved": true, "online": false}, opts)
 
 	if err != nil {
 		logEntry.WithField("error", err).Error("Error while retrieving data from DB")
@@ -116,6 +118,31 @@ func (m *mongoProvider) Get(ctx context.Context, skip int64, limit int64) ([]mod
 		}
 		serviceProviders = append(serviceProviders, serviceProvider)
 	}
+	_ = cursor.Close(ctx)
+	return serviceProviders, err
+}
+
+func (m *mongoProvider) GetOnline(ctx context.Context, skip int64, limit int64) ([]models.ServiceProvider, error) {
+	logEntry := logger.WithContext(ctx)
+
+	opts := mongoOptions(skip, limit)
+
+	serviceProviders := make([]models.ServiceProvider, 0)
+	cursor, err := m.collection.Find(ctx, bson.M{"approved": true, "online": true}, opts)
+
+	if err != nil {
+		logEntry.WithField("error", err).Error("Error while retrieving data from DB")
+		return serviceProviders, err
+	}
+	for cursor.Next(ctx) {
+		serviceProvider := models.ServiceProvider{}
+		err := cursor.Decode(&serviceProvider)
+		if err != nil {
+			logEntry.WithField("error", err.Error()).Error("Error while decoding service provider")
+		}
+		serviceProviders = append(serviceProviders, serviceProvider)
+	}
+	_ = cursor.Close(ctx)
 	return serviceProviders, err
 }
 

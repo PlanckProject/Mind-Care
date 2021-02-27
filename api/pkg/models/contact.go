@@ -18,5 +18,5 @@ type Address struct {
 	Country        string    `bson:"country" json:"country"`
 	Landmark       string    `bson:"landmark" json:"landmark"`
 	ZipCode        string    `bson:"zip_code" json:"zip_code"`
-	Coordinates    []float64 `bson:"-" json:"coordinates"`
+	Coordinates    []float64 `bson:"-" json:"coordinates,omitempty"`
 }

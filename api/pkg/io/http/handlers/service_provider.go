@@ -84,6 +84,10 @@ func getServiceProvidersByLocation(svc service.IServiceProvidersService, cfg *co
 		var err error
 		serviceProviderRequestParams := &models.ServiceProviderRequestParams{Start: st, Limit: li}
 
+		if c.Query("online") == "true" {
+			serviceProviderRequestParams.Online = true
+		}
+
 		if c.Query("loc") == "true" {
 			lat, lon, maxDistance, parseErr := parseLatAndLon(c.Query("lat"), c.Query("lon"), c.Query("dist"), cfg.App.MaxDistanceDefault)
 			if parseErr != nil {
@@ -131,14 +135,9 @@ func parseStartAndLimitQueries(start, limit string, maxQueryLimit int64) (st, li
 		logger.Warn("Unable to parse limit query param, using default")
 	}
 
-	if li > maxQueryLimit {
+	if li > maxQueryLimit || li <= 0 {
 		li = maxQueryLimit
-		logger.Warnf("Queried more items that allowed. Defaulting to %d items", li)
-	}
-
-	if li <= 0 {
-		logger.Warn("Invalid limit query, dropping the request")
-		li = 0
+		logger.Warnf("Defaulting to max items (%d)", li)
 	}
 
 	return

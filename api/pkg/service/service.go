@@ -37,14 +37,19 @@ func (s *serviceProvidersServiceImpl) GetByID(ctx context.Context, id string) (*
 	}
 
 	serviceProvider, err := s.repo.GetByID(ctx, mongoObjectId)
+	if err == nil {
+		return &serviceProvider, nil
+	}
+
 	return &serviceProvider, errors.NewErrorWithMetadata().SetError(err.Error())
 }
 
 func (s *serviceProvidersServiceImpl) Get(ctx context.Context, serviceProviderRequestParams *models.ServiceProviderRequestParams) ([]models.ServiceProvider, error) {
 	var response []models.ServiceProvider
 	var err error
-
-	if serviceProviderRequestParams.Location {
+	if serviceProviderRequestParams.Online {
+		response, err = s.repo.GetOnline(ctx, serviceProviderRequestParams.Start, serviceProviderRequestParams.Limit)
+	} else if serviceProviderRequestParams.Location {
 		response, err = s.repo.GetNearCoordinates(ctx, &repository.LocationQueryParams{
 			Lat:         serviceProviderRequestParams.LocationQuery.Geometery.Lat,
 			Lon:         serviceProviderRequestParams.LocationQuery.Geometery.Lon,
@@ -62,12 +67,20 @@ func (s *serviceProvidersServiceImpl) Get(ctx context.Context, serviceProviderRe
 }
 
 func (s *serviceProvidersServiceImpl) Add(ctx context.Context, serviceProvider models.ServiceProvider) (string, error) {
-	lat, lon, err := getCoordinates(ctx, &serviceProvider.Contact.Address, &s.cfg.Maps)
-	if err != nil {
-		return "", errors.
-			NewErrorWithMetadata().
-			SetError(errorKeys.LOCATION_DATA_NOT_FOUND.Error()).
-			SetMetadata("Unable to fetch coordinates. Please supply the coordinates to proceed")
+	var lat, lon float64
+	var err error
+
+	if serviceProvider.Online {
+		lat = 0
+		lon = 0
+	} else {
+		lat, lon, err = getCoordinates(ctx, &serviceProvider.Contact.Address, &s.cfg.Maps)
+		if err != nil {
+			return "", errors.
+				NewErrorWithMetadata().
+				SetError(errorKeys.LOCATION_DATA_NOT_FOUND.Error()).
+				SetMetadata("Unable to fetch coordinates. Please supply the coordinates to proceed")
+		}
 	}
 
 	serviceProvider.Location.Type = "Point"
