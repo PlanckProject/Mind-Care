@@ -2,7 +2,7 @@ version: "3.9"
 services:
   nginx:
     build:
-      context: ./proxy
+      context: ./nginx
       dockerfile: Dockerfile
     ports:
       - "80:80"
@@ -10,10 +10,10 @@ services:
       - api
       - frontend
   api:
-    build:
-      context: ./api
-      dockerfile: Dockerfile
+    image: docker.pkg.github.com/planckproject/mental-wellbeing-resources/api:latest
+    environment:
+      MONGO_URI: $MONGO_URI
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
+    image: docker.pkg.github.com/planckproject/mental-wellbeing-resources/frontend:latest
+    environment:
+      API_URI=api:8082

@@ -1,4 +1,4 @@
-FROM golang:1.5-alpine as builder
+FROM golang:1.15-alpine as builder
 WORKDIR /app
 COPY . .
 RUN go build -o api cmd/main/main.go
