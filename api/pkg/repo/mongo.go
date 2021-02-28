@@ -3,6 +3,7 @@ package repo
 import (
 	"context"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/config"
@@ -17,6 +18,10 @@ import (
 )
 
 func NewMongoDBDataProvider(lifecycle fx.Lifecycle, cfg *config.Configuration) IServiceProvidersRepo {
+	if len(cfg.Mongo.ConnectionString) == 0 {
+		cfg.Mongo.ConnectionString = os.Getenv("MONGO_URI")
+	}
+
 	clientOptions := options.Client().ApplyURI(cfg.Mongo.ConnectionString)
 	var err error
 	mongoDataProvider := &mongoProvider{}
