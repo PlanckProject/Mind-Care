@@ -62,6 +62,9 @@ export default {
   build: {
   },
 
+  generate: {
+    subFolders: false
+  },
   // Custom modules
   fontawesome: {
     icons: {
