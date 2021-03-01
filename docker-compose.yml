@@ -14,6 +14,8 @@ services:
     image: docker.pkg.github.com/planckproject/mind-care/api:latest
     environment:
       - "MONGO_URI=${MONGO_URI}"
+      - "GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}"
+      - "BING_MAPS_API_KEY=${BING_MAPS_API_KEY}"
   frontend:
     image: docker.pkg.github.com/planckproject/mind-care/frontend:latest
     environment:

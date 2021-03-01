@@ -12,7 +12,7 @@ maps:
   provider_api_key_placeholder: '${api_key}'
   osm:
     url: 'https://nominatim.openstreetmap.org/search?q=${query}&format=json&polygon=1&addressdetails=1'
-    enabled: false
+    enabled: true
   bing_maps:
     url: 'http://dev.virtualearth.net/REST/v1/Locations?query=${query}&key=${api_key}'
     enabled: true
