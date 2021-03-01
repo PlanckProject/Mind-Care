@@ -9,6 +9,8 @@ services:
     depends_on:
       - api
       - frontend
+    volume:
+      - /etc/letsencrypt:/etc/letsencrypt
   api:
     image: docker.pkg.github.com/planckproject/mental-wellbeing-resources/api:latest
     environment:

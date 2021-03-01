@@ -1,0 +1,14 @@
+upstream frontend {
+    server frontend:3000;
+}
+
+server {
+    listen 80;
+
+    location / {
+      proxy_pass http://frontend;
+      proxy_pass_request_headers on;
+      underscores_in_headers on;
+    }
+
+}
