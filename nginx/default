@@ -1,14 +1,11 @@
-upstream frontend {
-    server frontend:3000;
-}
-
 server {
-    listen 80;
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    server_name mindcare.page;
 
     location / {
-      proxy_pass http://frontend;
+      proxy_pass http://frontend:3000;
       proxy_pass_request_headers on;
-      underscores_in_headers on;
     }
-
 }
