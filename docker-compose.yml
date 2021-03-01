@@ -19,4 +19,4 @@ services:
   frontend:
     image: docker.pkg.github.com/planckproject/mind-care/frontend:latest
     environment:
-      - "API_URI=${API_URI}"
+      - "API_SERVER_URI=${API_SERVER_URI}"

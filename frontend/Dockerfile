@@ -1,4 +1,5 @@
 FROM node:12-alpine
+WORKDIR /mind-care
 COPY package.json .
 RUN npm install
 COPY . .

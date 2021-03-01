@@ -23,7 +23,13 @@ export default {
     let providers = await axios
       .get(requestUrl)
       .then((res) => res.data.data)
-      .catch(() => context.redirect("/error"));
+      .catch((err) => {
+        if (context.isServer) {
+          console.error(err);
+        }
+        context.redirect("/error");
+      });
+
     return { providers };
   },
   mounted() {
