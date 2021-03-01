@@ -1,9 +1,7 @@
 version: "3.9"
 services:
   nginx:
-    build:
-      context: ./nginx
-      dockerfile: Dockerfile
+    image: docker.pkg.github.com/planckproject/mental-wellbeing-resources/nginx:latest
     ports:
       - "80:80"
     depends_on:
@@ -11,11 +9,12 @@ services:
       - frontend
     volume:
       - /etc/letsencrypt:/etc/letsencrypt
+      - /etc/nginx:./nginx-conf
   api:
     image: docker.pkg.github.com/planckproject/mental-wellbeing-resources/api:latest
     environment:
-      MONGO_URI: $MONGO_URI
+      - "MONGO_URI=${MONGO_URI}"
   frontend:
     image: docker.pkg.github.com/planckproject/mental-wellbeing-resources/frontend:latest
     environment:
-      API_URI=api:8082
+      - "API_URI=api:8082"
