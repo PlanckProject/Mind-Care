@@ -69,5 +69,6 @@ export default {
 
   privateRuntimeConfig: {
     apiUri: process.env.API_SERVER_URI || 'http://localhost:8082'
-  }
+  },
+
 }
