@@ -1,4 +1,4 @@
-module github.com/PlanckProject/Mental-Wellbeing-Resources/api
+module github.com/PlanckProject/Mind-Care/api
 
 go 1.15
 

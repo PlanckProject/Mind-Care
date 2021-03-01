@@ -3,7 +3,7 @@
     <site-header />
     <div class="error-d">
         <h3 style="color:red">This looks like an error to us.</h3>
-        If this was unexpected, kindly report the error <a href="https://github.com/PlanckProject/Mental-Wellbeing-Resources" target="_blank">here</a>.
+        If this was unexpected, kindly report the error <a href="https://github.com/PlanckProject/Mind-Care" target="_blank">here</a>.
     </div>
   </main>
 </template>

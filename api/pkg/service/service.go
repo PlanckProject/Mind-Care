@@ -3,10 +3,10 @@ package service
 import (
 	"context"
 
-	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/config"
-	errorKeys "github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/errors"
-	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/models"
-	repository "github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/repo"
+	"github.com/PlanckProject/Mind-Care/api/config"
+	errorKeys "github.com/PlanckProject/Mind-Care/api/pkg/errors"
+	"github.com/PlanckProject/Mind-Care/api/pkg/models"
+	repository "github.com/PlanckProject/Mind-Care/api/pkg/repo"
 	"github.com/PlanckProject/go-commons/errors"
 	"github.com/PlanckProject/go-commons/logger"
 	"go.mongodb.org/mongo-driver/bson/primitive"

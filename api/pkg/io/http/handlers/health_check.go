@@ -3,8 +3,8 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/core/utils"
-	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/repo"
+	"github.com/PlanckProject/Mind-Care/api/pkg/core/utils"
+	"github.com/PlanckProject/Mind-Care/api/pkg/repo"
 	"github.com/gin-gonic/gin"
 )
 

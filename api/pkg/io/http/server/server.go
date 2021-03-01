@@ -8,8 +8,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/config"
-	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/io/http/handlers"
+	"github.com/PlanckProject/Mind-Care/api/config"
+	"github.com/PlanckProject/Mind-Care/api/pkg/io/http/handlers"
 	"github.com/PlanckProject/go-commons/logger"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/fx"

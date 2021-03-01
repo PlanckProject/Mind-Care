@@ -3,7 +3,7 @@ package repo
 import (
 	"context"
 
-	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/models"
+	"github.com/PlanckProject/Mind-Care/api/pkg/models"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.uber.org/fx"
 )

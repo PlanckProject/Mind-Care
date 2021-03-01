@@ -1,4 +1,4 @@
-# Mental-Wellbeing-Resources
+# Mind-Care
 
 This idea of cumulating mental wellbeing resources has been put forward by Trisanki Saikia. Ms. Saikia is a Research Assistant at Solidaridad Network and is working in Global Climate and Landscape Innovation Taskforce in the German office of the network.
 

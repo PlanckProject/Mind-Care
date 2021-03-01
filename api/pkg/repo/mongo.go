@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/config"
-	"github.com/PlanckProject/Mental-Wellbeing-Resources/api/pkg/models"
+	"github.com/PlanckProject/Mind-Care/api/config"
+	"github.com/PlanckProject/Mind-Care/api/pkg/models"
 	"github.com/PlanckProject/go-commons/logger"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
