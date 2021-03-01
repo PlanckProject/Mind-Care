@@ -7,7 +7,7 @@ services:
     depends_on:
       - api
       - frontend
-    volume:
+    volumes:
       - /etc/letsencrypt:/etc/letsencrypt
       - /etc/nginx:./nginx-conf
   api:
