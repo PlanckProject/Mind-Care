@@ -171,13 +171,27 @@ export default {
         "https://www.google.com/maps/place/" +
         `${this.provider.contact.address.coordinates[0]}N+${this.provider.contact.address.coordinates[1]}E`
       );
-    },
+    }
+  },
+  methods: {
+    getServicesAsTags() {
+      return this.provider.services.join(", ")
+    }
   },
   head() {
     return {
       bodyAttrs: {
         class: this.$store.getters["theme/theme"],
       },
+      title: `${this.provider.name} - Mind Care`,
+      meta: [
+        { charset: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        {
+          name: `description`,
+          content: this.getServicesAsTags(),
+        },
+      ]
     };
   },
 };

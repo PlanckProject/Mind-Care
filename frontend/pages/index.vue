@@ -52,6 +52,15 @@ export default {
       bodyAttrs: {
         class: this.$store.getters["theme/theme"],
       },
+      title: "Mind Care",
+      meta: [
+        { charset: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        {
+          name: `description`,
+          content: "Mind Care is a non-profit opensource initiative to helps people catch hold of their mental health.",
+        },
+      ]
     };
   },
 };
