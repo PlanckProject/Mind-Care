@@ -70,6 +70,10 @@ func (s *serviceProvidersServiceImpl) Add(ctx context.Context, serviceProvider m
 	var lat, lon float64
 	var err error
 
+	if len(serviceProvider.Services) == 0 {
+		return "", errors.NewErrorWithMetadata().SetError(errorKeys.INVALID_SERVICES.Error())
+	}
+
 	if serviceProvider.Online {
 		lat = 0
 		lon = 0

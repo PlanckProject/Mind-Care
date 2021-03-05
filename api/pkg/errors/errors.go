@@ -7,6 +7,7 @@ var (
 	NO_DATA                 = libErrors.New("ERR_NO_DATA")
 	LOCATION_DATA_NOT_FOUND = libErrors.New("ERR_LOCATION_DATA_NOT_FOUND")
 	INVALID_ID              = libErrors.New("ERR_INVALID_ID")
+	INVALID_SERVICES        = libErrors.New("ERR_INVALID_SERVICES")
 	INVALID_QUERY_LIMIT     = libErrors.New("ERR_INVALID_QUERY_LIMIT")
 	INVALID_QUERY_PARAMS    = libErrors.New("ERR_INVALID_QUERY_PARAMS")
 )

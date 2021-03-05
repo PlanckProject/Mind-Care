@@ -42,6 +42,8 @@ func addServiceProvider(svc service.IServiceProvidersService) func(*gin.Context)
 		merr := err.(errors.ErrorWithMetadata)
 		switch merr.ErrorValue() {
 		case errorKeys.LOCATION_DATA_NOT_FOUND.Error():
+			fallthrough
+		case errorKeys.INVALID_SERVICES.Error():
 			utils.Respond(c, http.StatusUnprocessableEntity, nil, err)
 		default:
 			logger.WithField("error", err).Error("Error while adding data")
