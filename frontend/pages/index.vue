@@ -57,10 +57,18 @@ export default {
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
         {
-          name: `description`,
-          content: "Mind Care is a non-profit opensource initiative to helps people catch hold of their mental health.",
+          hid: "description",
+          name: "description",
+          content:
+            "Mind Care is a non-profit open source initiative to help people catch hold of their mental health.",
         },
-      ]
+        {
+          hid: "keywords",
+          name: "keywords",
+          content:
+            "Mind, Care, Mindcare, Mental, Health, Depression, Counselling, Psychiatrist, Mental Health, Talking, Wellbeing",
+        },
+      ],
     };
   },
 };
