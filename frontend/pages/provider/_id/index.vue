@@ -1,9 +1,17 @@
 <template>
   <main>
     <site-header />
+    <theme-switcher />
     <div class="generic-card">
       <h1>{{ provider.name }}</h1>
-      <h2>{{ provider.service_type }}</h2>
+      <div class="services">
+        <span
+          v-for="service in provider.services"
+          :key="`${service}-${provider.id}`"
+          >{{ service }}</span
+        >
+      </div>
+      <p v-if="provider.description">{{ provider.description }}</p>
       <div class="card-details">
         <div>
           <div v-if="provider.contact.contact_person">
@@ -26,7 +34,11 @@
               <font-awesome-icon icon="map-pin" /> Online
             </template>
             <template v-else>
-              <a target="_blank" :href="googleMapsLocation" style="word-wrap: break-word">
+              <a
+                target="_blank"
+                :href="googleMapsLocation"
+                style="word-wrap: break-word"
+              >
                 <font-awesome-icon icon="map-pin" />
                 {{ provider.contact.address.street_address_1 }},
                 {{ provider.contact.address.street_address_2 }},
@@ -86,7 +98,6 @@
 }
 @media screen and (min-width: 550px) {
   .generic-card {
-    
     padding: 1rem 3rem;
     h1 {
       margin: 1.5rem auto;
@@ -124,39 +135,13 @@ import axios from "axios";
 
 export default {
   async asyncData(context) {
-    // const provider = {
-    //   id: "603a33feeae9a825587c142b",
-    //   contact: {
-    //     contact_person: "Amrendra Bahubali",
-    //     email: "lol@lmfao.com",
-    //     number: "+919234234324",
-    //     address: {
-    //       street_address_1: "Sai Sumukha Sameeksha Apartments",
-    //       street_address_2: "Rachenahalli Main Road",
-    //       city: "Bengaluru",
-    //       state: "Karnataka",
-    //       country: "",
-    //       landmark: "",
-    //       zip_code: "560077",
-    //       coordinates: [13.0559579, 77.63091969999999],
-    //     },
-    //     other: [],
-    //     website: "https://gaurav.app",
-    //   },
-    //   name: "Offline service",
-    //   service_type: "Counselling",
-    //   fee_range: "less than Rs 500",
-    //   fee_negotiable: "Maybe",
-    //   timings: "24x7",
-    //   online: false,
-    // };
     const provider = await axios
       .get(
         context.$config.apiUri + `/service_provider/${context.route.params.id}`
       )
       .then((res) => res.data.data)
       .catch(() => context.redirect("/error"));
-      
+
     return { provider };
   },
   beforeMount() {

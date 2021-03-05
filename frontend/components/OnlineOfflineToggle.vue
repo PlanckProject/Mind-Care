@@ -27,20 +27,20 @@ div {
   * {
     color: inherit;
   }
-  line-height: 1.5rem;
-  width: 1.5rem;
-  height: 1.5rem;
+  line-height: 2.25rem;
+  width: 2.25rem;
+  height: 2.25rem;
   position: absolute;
   background: var(--accent-color);
-  top: 2.5rem;
+  top: 3.25rem;
   right: 0.5rem;
-  padding: 0rem 0.5rem;
+  text-align: center;
   border-radius: 50%;
   box-shadow: 0 0 0.15rem 0;
   text-decoration: none;
   transition: all 0.2s;
   cursor: pointer;
-  font-size: 0.5rem;
+  font-size: 0.75rem;
 
   span {
     margin: 0;

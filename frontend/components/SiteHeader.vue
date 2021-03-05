@@ -7,6 +7,7 @@
 <style lang="scss" scoped>
 div {
   background-image: url('~assets/img/leaf.png');
+  background-size: 105vw;
   padding: 1rem;
   border-radius: 0 0 0.5rem 0.5rem;
   text-align: center;
@@ -14,6 +15,12 @@ div {
 
   h1 {
     cursor: pointer;
+  }
+}
+
+@media screen and (min-width: 550px) {
+  div {
+    background-size: 45rem;
   }
 }
 </style>
