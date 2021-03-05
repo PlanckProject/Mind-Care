@@ -5,7 +5,7 @@ mongo:
   database: wellbeing_resources
   collection: service_providers
 app:
-  max_query_limit: 20
+  max_query_limit: 100 # This will be changed when paging is implemented on frontend
   max_distance_default: 25000
 maps:
   location_query_placeholder: '${query}'
