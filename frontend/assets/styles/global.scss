@@ -62,6 +62,19 @@ main {
   }
 }
 
+.no-data {
+  margin: 1rem;
+  text-align: justify;
+  h1 {
+    margin: 1rem;
+    color: red;
+    text-align: center;
+  }
+  a {
+    color: var(--accent-color);
+  }
+}
+
 @media screen and (min-width: 550px) {
   .services span {
     max-width: 15rem;

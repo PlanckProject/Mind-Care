@@ -3,7 +3,16 @@
     <site-header />
     <theme-switcher />
     <online-offline-toggle />
-    <provider-carousel :carouselData="providers" />
+    <template v-if="providers.length">
+      <provider-carousel :carouselData="providers" />
+    </template>
+    <template v-else>
+      <div class="no-data">
+        <h1>No service providers :(</h1>
+        <p>No matching service providers were found near your current location. This doesn't look like an issue to us, but the non-availability of services around your current location. Please get in touch with the team at <a href="mailto:wb.res@outlook.com">wb.res@outlook.com</a> for registering new service providers around you or look for an online service providers by clicking <a href="/?online=true">here</a>.</p><br>
+        <span>We wish you great health!</span>
+      </div>
+    </template>
   </main>
 </template>
 <script>
