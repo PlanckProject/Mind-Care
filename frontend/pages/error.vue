@@ -6,6 +6,9 @@
       If this was unexpected, kindly report the error
       <a href="https://github.com/PlanckProject/Mind-Care" target="_blank"
         >here</a
+      >
+      or write an email to
+      <a href="mailto:wb.res@outlook.com" target="_blank">wb.res@outlook.com</a
       >.
     </div>
   </main>

@@ -1,7 +1,7 @@
 server:
   port: 8082
 mongo:
-  connection_string: 'mongodb://localhost:27017/mental_wellbeing_resources'
+  connection_string: ''
   database: wellbeing_resources
   collection: service_providers
 app:

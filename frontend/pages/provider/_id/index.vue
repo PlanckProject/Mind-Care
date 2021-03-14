@@ -40,9 +40,7 @@
                 style="word-wrap: break-word"
               >
                 <font-awesome-icon icon="map-pin" />
-                {{ provider.contact.address.street_address_1 }},
-                {{ provider.contact.address.street_address_2 }},
-                {{ provider.contact.address.city }}
+                {{ provider.contact.address | formatAddressObject }}
               </a>
             </template>
           </div>
@@ -148,6 +146,18 @@ export default {
     if (!this.$store.getters["theme/customThemeSet"])
       this.$store.dispatch("theme/initTheme");
   },
+  filter: {
+    formatAddressObject(addressObject) {
+      const response = [];
+      response.push(addressObject.street_address_1);
+      response.push(addressObject.street_address_2);
+      response.push(addressObject.city);
+      return response
+        .map((ele) => ele.trim(","))
+        .map((ele) => ele.trim())
+        .join(", ");
+    },
+  },
   computed: {
     isFeeNegotiable() {
       const feeNegotiable = this.provider.fee_negotiable.toLowerCase();
@@ -171,12 +181,12 @@ export default {
         "https://www.google.com/maps/place/" +
         `${this.provider.contact.address.coordinates[0]}N+${this.provider.contact.address.coordinates[1]}E`
       );
-    }
+    },
   },
   methods: {
     getServicesAsTags() {
-      return this.provider.services.join(", ")
-    }
+      return this.provider.services.join(", ");
+    },
   },
   head() {
     return {
@@ -197,7 +207,7 @@ export default {
           name: "keywords",
           content: this.getServicesAsTags(),
         },
-      ]
+      ],
     };
   },
 };
