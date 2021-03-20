@@ -25,7 +25,8 @@ export default {
   */
   css: [
     '~assets/styles/light.scss',
-    '~assets/styles/global.scss'
+    '~assets/styles/global.scss',
+    '~assets/styles/transitions.scss',
   ],
   /*
   ** Plugins to load before mounting the App
@@ -63,7 +64,7 @@ export default {
   // Custom modules
   fontawesome: {
     icons: {
-      solid: ['faSignInAlt', 'faSun', 'faMoon', 'faCircle', 'faMapPin', 'faGlobe', 'faPhone', 'faEnvelope', 'faClock', 'faMoneyBill', 'faDiagnoses', 'faLaptopMedical'],
+      solid: ['faArrowRight', 'faSun', 'faMoon', 'faCircle', 'faMapPin', 'faGlobe', 'faPhone', 'faEnvelope', 'faClock', 'faMoneyBill', 'faDiagnoses', 'faLaptopMedical'],
     }
   },
 

@@ -13,9 +13,10 @@
           No matching service providers were found near your current location.
           This doesn't look like an issue to us, but the non-availability of
           services around your current location. Please get in touch with the
-          team at <a href="mailto:wb.res@outlook.com">wb.res@outlook.com</a> or click <a href="/register">here</a> for
-          registering new service providers around you or look for online
-          service providers by clicking <a href="/">here</a>.
+          team at <a href="mailto:wb.res@outlook.com">wb.res@outlook.com</a> or
+          click <a href="/register">here</a> for registering new service
+          providers around you or look for online service providers by clicking
+          <a href="/">here</a>.
         </p>
         <br />
         <span>We wish you great health!</span>
@@ -53,7 +54,6 @@ export default {
       )
       .join("&")}`;
 
-    console.log(requestUrl);
     let providers = await axios
       .get(requestUrl)
       .then((res) => res.data.data)
