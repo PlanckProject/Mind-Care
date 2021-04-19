@@ -1,6 +1,6 @@
 <template>
   <div class="h">
-    <NuxtLink to="/"><h1>Mind Care</h1></NuxtLink>
+    <a href="/"><h1>Mind Care</h1></a>
     <NuxtLink to="/register">
       <div
         class="register-btn"
