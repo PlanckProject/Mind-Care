@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   nginx:
-    image: docker.pkg.github.com/planckproject/mind-care/nginx:latest
+    image: ghcr.io/planckproject/mind-care/nginx:latest
     ports:
       - "80:80"
       - "443:80"
@@ -11,13 +11,13 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt
   api:
-    image: docker.pkg.github.com/planckproject/mind-care/api:latest
+    image: ghcr.io/planckproject/mind-care/api:latest
     environment:
       - "GIN_MODE=release"
       - "MONGO_URI=${MONGO_URI}"
       - "GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}"
       - "BING_MAPS_API_KEY=${BING_MAPS_API_KEY}"
   frontend:
-    image: docker.pkg.github.com/planckproject/mind-care/frontend:latest
+    image: ghcr.io/planckproject/mind-care/frontend:latest
     environment:
       - "API_SERVER_URI=${API_SERVER_URI}"
